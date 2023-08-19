@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://lotDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="lotDc"
+                  class="com.company.barcodetest.entity.Lot">
+            <fetchPlan extends="_base">
+                <property name="packages" fetchPlan="_base"/>
+                <property name="material" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="packagesDc" property="packages"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="lotDc">
+            <textField id="lotCodeField" property="lotCode"/>
+            <textField id="supplierField" property="supplier"/>
+            <entityPicker id="materialField" property="material">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+        </formLayout>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button action="packagesDataGrid.create"/>
+            <button action="packagesDataGrid.edit"/>
+            <button action="packagesDataGrid.remove"/>
+        </hbox>
+        <dataGrid id="packagesDataGrid" dataContainer="packagesDc" width="100%" minHeight="20em">
+            <actions>
+                <action id="create" type="list_create">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="edit" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns>
+                <column property="code"/>
+                <column property="quantity"/>
+            </columns>
+        </dataGrid>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

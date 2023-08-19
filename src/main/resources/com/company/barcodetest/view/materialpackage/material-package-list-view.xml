@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://materialPackageListView.title"
+      focusComponent="materialPackagesDataGrid">
+    <data readOnly="true">
+        <collection id="materialPackagesDc"
+                    class="com.company.barcodetest.entity.MaterialPackage">
+            <fetchPlan extends="_base">
+                <property name="lot" fetchPlan="_base">
+                    <property name="material" fetchPlan="_base"/>
+                </property>
+            </fetchPlan>
+            <loader id="materialPackagesDl">
+                <query>
+                    <![CDATA[select e from MaterialPackage e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="materialPackagesDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="materialPackagesDataGrid.create"/>
+            <button id="editBtn" action="materialPackagesDataGrid.edit"/>
+            <button id="removeBtn" action="materialPackagesDataGrid.remove"/>
+            <button id="excelBtn" action="materialPackagesDataGrid.excelExport"/>
+            <simplePagination id="pagination" dataLoader="materialPackagesDl"/>
+        </hbox>
+        <dataGrid id="materialPackagesDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="materialPackagesDc">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove"/>
+                <action id="excelExport" type="grdexp_excelExport"/>
+
+            </actions>
+            <columns>
+                <column property="lot.material.materialCode"/>
+                <column property="lot.lotCode"/>
+                <column property="code"/>
+                <column property="quantity"/>
+                <column property="lot"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>
